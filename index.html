@@ -1,11 +1,12 @@
 <!DOCTYPE html>
 <html lang="ja">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>SVG 360 Viewer Sample</title>
   <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="github-markdown.css"/>
+  <link rel="stylesheet" href="github-markdown.css" />
   <style>
     .markdown-body {
       box-sizing: border-box;
@@ -14,7 +15,7 @@
       margin: 0 auto;
       padding: 45px;
     }
-  
+
     @media (max-width: 767px) {
       .markdown-body {
         padding: 15px;
@@ -26,14 +27,25 @@
 <body class="markdown-body">
   <header>
     <h1>SVG 360 Viewer Sample</h1>
-    <p>この記事では、HTMLの見栄えを良くする方法について説明します。</p>
   </header>
 
   <section>
-    <h2>コードの見やすさを向上させる</h2>
-    <p>技術ブログでは、コードを強調して表示することが重要です。次のように、<code>code</code>タグや<code>pre</code>タグを使用することができます。</p>
+    <h2>1. Simple view</h2>
+    <svg id="simpleview" width="600" height="300" viewBox="0 0 600 300">
+      <defs>
+        <filter id="360map_simple" x="0" y="0" width="100%" height="100%" filterUnits="objectBoundingBox"
+          color-interpolation-filters="sRGB">
+          <feImage xlink:href="./mapimgs/map_scale=375.0_hfov=135_600to600.png" result="zoommap" crossorigin="anonymous" />
+          <feDisplacementMap in="SourceGraphic" in2="zoommap" scale="375" xChannelSelector="R" yChannelSelector="G" />
+        </filter>
+      </defs>
+      <image x="0" y="0" width="600" height="300"
+        xlink:href="https://upload.wikimedia.org/wikipedia/commons/thumb/6/6f/Kings_Cross_Railway_Station_Concourse_360x180%2C_London%2C_UK_-_Diliff.jpg/1024px-Kings_Cross_Railway_Station_Concourse_360x180%2C_London%2C_UK_-_Diliff.jpg"
+        preserveAspectRatio="xMidYMid slice" filter="url(#360map_simple)" />
+    </svg>
+    <pre><code>
 
-    <pre><code>&lt;div&gt;これはサンプルコードです&lt;/div&gt;</code></pre>
+    </code></pre>
   </section>
 
   <section>
