@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+</head>
+
+<body class="markdown-body">
+  <svg id="simpleview" width="600" height="300" viewBox="0 0 600 300">
+    <defs>
+      <filter id="360map_simple" x="0" y="0" width="100%" height="100%" filterUnits="objectBoundingBox"
+        color-interpolation-filters="sRGB">
+        <feImage xlink:href="./mapimgs/map_scale=375.0_hfov=135_600to600.png" result="zoommap"
+          crossorigin="anonymous" />
+        <feDisplacementMap in="SourceGraphic" in2="zoommap" scale="375" xChannelSelector="R" yChannelSelector="G" />
+      </filter>
+    </defs>
+    <image x="0" y="0" width="600" height="300"
+      xlink:href="https://upload.wikimedia.org/wikipedia/commons/thumb/6/6f/Kings_Cross_Railway_Station_Concourse_360x180%2C_London%2C_UK_-_Diliff.jpg/1024px-Kings_Cross_Railway_Station_Concourse_360x180%2C_London%2C_UK_-_Diliff.jpg"
+      preserveAspectRatio="xMidYMid slice" filter="url(#360map_simple)" />
+  </svg>
+
+</html>
