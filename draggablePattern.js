@@ -31,24 +31,40 @@ function draggablePattern(rectImgId, tilePatternId, halfWidth, halfHeight, lockS
     }
   });
 
-  rectImg.addEventListener('mousedown', (e) => {
+  const startDrag = (clientX, clientY) => {
     isDragging = true;
-    startPos.x = e.clientX - currentPos.x;
-    startPos.y = e.clientY - currentPos.y;
+    startPos.x = clientX - currentPos.x;
+    startPos.y = clientY - currentPos.y;
+  };
+  rectImg.addEventListener('mousedown', (e) => {
+    startDrag(e.clientX, e.clientY);
+  });
+  rectImg.addEventListener('touchstart', (e) => {
+    const touch = e.touches[0];
+    startDrag(touch.clientX, touch.clientY);
   });
 
-  window.addEventListener('mousemove', (e) => {
+  const moveDrag = (clientX, clientY) => {
     if (isDragging) {
-      updatePosition('x', halfSize.width);
+      updatePosition('x', halfSize.width, clientX);
       if (!isHorizontalLock) {
-        updatePosition('y', halfSize.height);
+        updatePosition('y', halfSize.height, clientY);
       }
-    }
+    }    
+  };
+  window.addEventListener('mousemove', (e) => {
+    moveDrag(e.clientX, e.clientY);
+  });
+  window.addEventListener('touchmove', (e) => {
+    const touch = e.touches[0];
+    moveDrag(touch.clientX, touch.clientY);
   });
 
-  window.addEventListener('mouseup', () => {
+  const stopDrag = () => {
     isDragging = false;
-  });
+  };
+  window.addEventListener('mouseup', stopDrag);
+  window.addEventListener('touchend', stopDrag);
 
   resetButton?.addEventListener('click', () => {
     console.log("reset")
