@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+  <script src="./draggablePattern.js"> </script>
+</head>
+
+<body class="markdown-body">
+  <svg width="600" height="300" viewBox="0 0 600 300">
+    <defs>
+      <filter id="360mapRotatableScalingFilter" x="0" y="0" width="100%" height="100%" filterUnits="userSpaceOnUse"
+        color-interpolation-filters="sRGB">
+        <feImage xlink:href="./mapimgs/map_scale=195.0_hfov=135_1080to600.png" result="map" />
+        <feDisplacementMap in="SourceGraphic" in2="map" scale="195" xChannelSelector="R" yChannelSelector="G" />
+      </filter>
+      <pattern id="tilePattern_RotatableScaling" patternUnits="userSpaceOnUse" x="-240" y="-1200" width="1080"
+        height="540">
+        <image x="0" y="0" width="1080" height="540"
+          xlink:href="https://upload.wikimedia.org/wikipedia/commons/thumb/6/6f/Kings_Cross_Railway_Station_Concourse_360x180%2C_London%2C_UK_-_Diliff.jpg/1024px-Kings_Cross_Railway_Station_Concourse_360x180%2C_London%2C_UK_-_Diliff.jpg" />
+      </pattern>
+    </defs>
+    <rect id="patternRect_RotatableScaling" x="0" y="0" width="600" height="300"
+      fill="url(#tilePattern_RotatableScaling)" filter="url(#360mapRotatableScalingFilter)" />
+    <script>
+      draggablePattern('patternRect_RotatableScaling', 'tilePattern_RotatableScaling', 540, 270, null, 'CenterResetButton_RotatableScaling');
+    </script>
+  </svg>
+</html>

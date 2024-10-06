@@ -7,11 +7,10 @@
 <body class="markdown-body">
   <svg id="simpleview" width="600" height="300" viewBox="0 0 600 300">
     <defs>
-      <filter id="360map_simple" x="0" y="0" width="100%" height="100%" filterUnits="objectBoundingBox"
+      <filter id="360map_simple" x="0" y="0" width="100%" height="100%" filterUnits="userSpaceOnUse"
         color-interpolation-filters="sRGB">
-        <feImage xlink:href="./mapimgs/map_scale=375.0_hfov=135_600to600.png" result="zoommap"
-          crossorigin="anonymous" />
-        <feDisplacementMap in="SourceGraphic" in2="zoommap" scale="375" xChannelSelector="R" yChannelSelector="G" />
+        <feImage xlink:href="./mapimgs/map_scale=375.0_hfov=135_600to600.png" result="map" />
+        <feDisplacementMap in="SourceGraphic" in2="map" scale="375" xChannelSelector="R" yChannelSelector="G" />
       </filter>
     </defs>
     <image x="0" y="0" width="600" height="300"

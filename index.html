@@ -22,37 +22,189 @@
       }
     }
   </style>
+  <script src="./draggablePattern.js"> </script>
 </head>
 
 <body class="markdown-body">
   <header>
     <h1>SVG 360 Viewer Sample</h1>
+    <p>
+      Used image: Kings Cross Railway Station Concourse 360x180, London, UK - Diliff, CC BY-SA 3.0
+      &lt;https://creativecommons.org/licenses/by-sa/3.0&gt;, ウィキメディア・コモンズ経由で
+    </p>
   </header>
+  <section>
+    <h2>0. No filter(Equirectangular image)</h2>
+    <image x="0" y="0" width="600" height="300"
+      src="https://upload.wikimedia.org/wikipedia/commons/thumb/6/6f/Kings_Cross_Railway_Station_Concourse_360x180%2C_London%2C_UK_-_Diliff.jpg/1024px-Kings_Cross_Railway_Station_Concourse_360x180%2C_London%2C_UK_-_Diliff.jpg" />
+  </section>
 
   <section>
     <h2>1. Simple view</h2>
     <svg id="simpleview" width="600" height="300" viewBox="0 0 600 300">
       <defs>
-        <filter id="360map_simple" x="0" y="0" width="100%" height="100%" filterUnits="objectBoundingBox"
+        <filter id="360mapSimpleFilter" x="0" y="0" width="100%" height="100%" filterUnits="userSpaceOnUse"
           color-interpolation-filters="sRGB">
-          <feImage xlink:href="./mapimgs/map_scale=375.0_hfov=135_600to600.png" result="zoommap" crossorigin="anonymous" />
-          <feDisplacementMap in="SourceGraphic" in2="zoommap" scale="375" xChannelSelector="R" yChannelSelector="G" />
+          <feImage xlink:href="./mapimgs/map_scale=375.0_hfov=135_600to600.png" result="map" />
+          <feDisplacementMap in="SourceGraphic" in2="map" scale="375" xChannelSelector="R" yChannelSelector="G" />
         </filter>
       </defs>
       <image x="0" y="0" width="600" height="300"
         xlink:href="https://upload.wikimedia.org/wikipedia/commons/thumb/6/6f/Kings_Cross_Railway_Station_Concourse_360x180%2C_London%2C_UK_-_Diliff.jpg/1024px-Kings_Cross_Railway_Station_Concourse_360x180%2C_London%2C_UK_-_Diliff.jpg"
-        preserveAspectRatio="xMidYMid slice" filter="url(#360map_simple)" />
+        preserveAspectRatio="xMidYMid slice" filter="url(#360mapSimpleFilter)" />
     </svg>
-    <pre><code>
-    </code></pre>
   </section>
 
   <section>
-    <h2>引用を使った強調</h2>
-    <p>重要なポイントや他のリソースからの引用は、<code>blockquote</code>タグを使うと視覚的に目立たせることができます。</p>
-    <blockquote>
-      <p>「シンプルなデザインが、読みやすさを最大限に引き出します。」</p>
-    </blockquote>
+    <h2>2-1. Rotatable View</h2>
+    <p>
+      <label for="switch">
+        Horizontal Lock: <input type="checkbox" id="horizontalLockSwitch" checked />
+      </label>
+    </p>
+    <p>
+      <button type="button" id="CenterResetButton"> Center Reset</button>
+    </p>
+    <svg width="600" height="300" viewBox="0 0 600 300">
+      <defs>
+        <filter id="360mapRotatableFilter" x="0" y="0" width="100%" height="100%" color-interpolation-filters="sRGB">
+          <feImage xlink:href="./mapimgs/map_scale=375.0_hfov=135_600to600.png" result="map" />
+          <feDisplacementMap in="SourceGraphic" in2="map" scale="375" xChannelSelector="R" yChannelSelector="G" />
+        </filter>
+        <pattern id="tilePattern_Rotatable" patternUnits="userSpaceOnUse" x="0" y="0" width="600" height="300">
+          <image
+            href="https://upload.wikimedia.org/wikipedia/commons/thumb/6/6f/Kings_Cross_Railway_Station_Concourse_360x180%2C_London%2C_UK_-_Diliff.jpg/1024px-Kings_Cross_Railway_Station_Concourse_360x180%2C_London%2C_UK_-_Diliff.jpg"
+            width="600" height="300" />
+        </pattern>
+      </defs>
+      <rect id="patternRect_Rotatable" x="0" y="0" width="600" height="300" fill="url(#tilePattern_Rotatable)"
+        filter="url(#360mapRotatableFilter)" />
+      <script>
+        draggablePattern('patternRect_Rotatable', 'tilePattern_Rotatable', 300, 150, 'horizontalLockSwitch', 'CenterResetButton');
+      </script>
+    </svg>
+  </section>
+
+  <section>
+    <h2>2-2. Multiple Synced Rotatable View</h2>
+
+  </section>
+
+  <section>
+    <h2>3-1. Multiple Steps Map</h2>
+    <p>
+      <label id="stepSliderLabel" for="range"> Step8: </label>
+      <input type="range" id="stepSlider" min="0" max="8" value="8" style="width: 550px;">
+    </p>
+    <svg width="600" height="300" viewBox="0 0 3000 1500">
+      <defs>
+        <filter id="360mapStepsFilter" x="0" y="0" width="100%" height="100%" filterUnits="userSpaceOnUse"
+          color-interpolation-filters="sRGB">
+          <feImage xlink:href="./mapimgs/stepmap_3000to600/map_1-8_scale=255_hfov=135_3000to600.png"
+            result="stepmap1" />
+          <feImage xlink:href="./mapimgs/stepmap_3000to600/map_2-8_scale=255_hfov=135_3000to600.png"
+            result="stepmap2" />
+          <feImage xlink:href="./mapimgs/stepmap_3000to600/map_3-8_scale=255_hfov=135_3000to600.png"
+            result="stepmap3" />
+          <feImage xlink:href="./mapimgs/stepmap_3000to600/map_4-8_scale=255_hfov=135_3000to600.png"
+            result="stepmap4" />
+          <feImage xlink:href="./mapimgs/stepmap_3000to600/map_5-8_scale=255_hfov=135_3000to600.png"
+            result="stepmap5" />
+          <feImage xlink:href="./mapimgs/stepmap_3000to600/map_6-8_scale=255_hfov=135_3000to600.png"
+            result="stepmap6" />
+          <feImage xlink:href="./mapimgs/stepmap_3000to600/map_7-8_scale=255_hfov=135_3000to600.png"
+            result="stepmap7" />
+          <feImage xlink:href="./mapimgs/stepmap_3000to600/map_8-8_scale=255_hfov=135_3000to600.png"
+            result="stepmap8" />
+
+          <feDisplacementMap in="SourceGraphic" in2="stepmap1" result="out1" scale="255" xChannelSelector="R"
+            yChannelSelector="G" />
+          <feDisplacementMap in="out1" in2="stepmap2" result="out2" scale="255" xChannelSelector="R"
+            yChannelSelector="G" />
+          <feDisplacementMap in="out2" in2="stepmap3" result="out3" scale="255" xChannelSelector="R"
+            yChannelSelector="G" />
+          <feDisplacementMap in="out3" in2="stepmap4" result="out4" scale="255" xChannelSelector="R"
+            yChannelSelector="G" />
+          <feDisplacementMap in="out4" in2="stepmap5" result="out5" scale="255" xChannelSelector="R"
+            yChannelSelector="G" />
+          <feDisplacementMap in="out5" in2="stepmap6" result="out6" scale="255" xChannelSelector="R"
+            yChannelSelector="G" />
+          <feDisplacementMap in="out6" in2="stepmap7" result="out7" scale="255" xChannelSelector="R"
+            yChannelSelector="G" />
+          <feDisplacementMap in="out7" in2="stepmap8" result="out8" scale="255" xChannelSelector="R"
+            yChannelSelector="G" />
+        </filter>
+      </defs>
+      <image x="0" y="0" width="3000" height="1500"
+        xlink:href="https://upload.wikimedia.org/wikipedia/commons/thumb/6/6f/Kings_Cross_Railway_Station_Concourse_360x180%2C_London%2C_UK_-_Diliff.jpg/1024px-Kings_Cross_Railway_Station_Concourse_360x180%2C_London%2C_UK_-_Diliff.jpg"
+        preserveAspectRatio="xMidYMid slice" filter="url(#360mapStepsFilter)" />
+      <script>
+        (function () {
+          const stepSlider = document.getElementById('stepSlider');
+          const stepSliderLabel = document.getElementById('stepSliderLabel');
+          const displacementFilter = document.getElementById('360mapStepsFilter');
+          const displacementSteps = [...displacementFilter.querySelectorAll('feDisplacementMap')].sort((a, b) => {
+            return (a.getAttribute("result") < b.getAttribute("result")) ? -1 : 1;
+          });
+          stepSlider.addEventListener('input', () => {
+            const selectedValue = parseInt(stepSlider.value);
+            stepSliderLabel.innerText = (selectedValue == 0) ? "No filter: " : `Step${selectedValue}: `;
+            displacementSteps.forEach((step, index) => {
+              console.log(index, selectedValue)
+              if (index < selectedValue) {
+                console.log(index, selectedValue)
+                step.setAttribute('scale', "255");
+              } else {
+                step.setAttribute('scale', "0");
+              }
+            });
+          });
+        })()
+      </script>
+    </svg>
+  </section>
+
+  <section>
+    <h2>3-2. Scaling Map</h2>
+    <svg width="600" height="300" viewBox="0 0 600 300">
+      <defs>
+        <filter id="360mapScalingFilter" x="0" y="0" width="100%" height="100%" filterUnits="userSpaceOnUse"
+          color-interpolation-filters="sRGB">
+          <feImage xlink:href="./mapimgs/map_scale=195.0_hfov=135_1080to600.png" result="map" />
+          <feOffset in="SourceGraphic" result="offsettedsrc" dx="-240" dy="-120" />
+          <feDisplacementMap in="offsettedsrc" in2="map" scale="195" xChannelSelector="R" yChannelSelector="G" />
+        </filter>
+      </defs>
+      <image x="0" y="0" width="1080" height="540"
+        xlink:href="https://upload.wikimedia.org/wikipedia/commons/thumb/6/6f/Kings_Cross_Railway_Station_Concourse_360x180%2C_London%2C_UK_-_Diliff.jpg/1024px-Kings_Cross_Railway_Station_Concourse_360x180%2C_London%2C_UK_-_Diliff.jpg"
+        preserveAspectRatio="xMidYMid slice" filter="url(#360mapScalingFilter)" />
+    </svg>
+  </section>
+
+  <section>
+    <h2>2+3: Rotatable Scaling Map</h2>
+    <p>
+      <button type="button" id="CenterResetButton_RotatableScaling"> Center Reset</button>
+    </p>
+    <svg width="600" height="300" viewBox="0 0 600 300">
+      <defs>
+        <filter id="360mapRotatableScalingFilter" x="0" y="0" width="100%" height="100%" filterUnits="userSpaceOnUse"
+          color-interpolation-filters="sRGB">
+          <feImage xlink:href="./mapimgs/map_scale=195.0_hfov=135_1080to600.png" result="map" />
+          <feDisplacementMap in="SourceGraphic" in2="map" scale="195" xChannelSelector="R" yChannelSelector="G" />
+        </filter>
+        <pattern id="tilePattern_RotatableScaling" patternUnits="userSpaceOnUse" x="-240" y="-1200" width="1080"
+          height="540">
+          <image x="0" y="0" width="1080" height="540"
+            xlink:href="https://upload.wikimedia.org/wikipedia/commons/thumb/6/6f/Kings_Cross_Railway_Station_Concourse_360x180%2C_London%2C_UK_-_Diliff.jpg/1024px-Kings_Cross_Railway_Station_Concourse_360x180%2C_London%2C_UK_-_Diliff.jpg" />
+        </pattern>
+      </defs>
+      <rect id="patternRect_RotatableScaling" x="0" y="0" width="600" height="300"
+        fill="url(#tilePattern_RotatableScaling)" filter="url(#360mapRotatableScalingFilter)" />
+      <script>
+        draggablePattern('patternRect_RotatableScaling', 'tilePattern_RotatableScaling', 540, 270, null, 'CenterResetButton_RotatableScaling');
+      </script>
+    </svg>
   </section>
 </body>
 
