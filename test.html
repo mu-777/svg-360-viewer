@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+  <script src="./draggablePattern.js"> </script>
+</head>
+
+<!-- バッファが -->
+
+<body class="markdown-body">
+  <svg width="600" height="300" viewBox="0 0 600 300">
+    <defs>
+      <filter id="360mapRotatableScalingFilter" x="0" y="0" width="100%" height="100%" filterUnits="userSpaceOnUse"
+        color-interpolation-filters="sRGB">
+        <feImage xlink:href="./mapimgs/map_scale=569.763_src=3000x1500_dst=600x300_hfov=135.png" result="map" />
+        <feDisplacementMap in="SourceGraphic" in2="map" scale="569.763" xChannelSelector="R" yChannelSelector="G" />
+      </filter>
+      <pattern id="tilePattern_RotatableScaling" patternUnits="userSpaceOnUse" x="-1200" y="-600" width="3000"
+        height="1500">
+        <image x="0" y="0" width="3000" height="1500"
+          xlink:href="https://upload.wikimedia.org/wikipedia/commons/thumb/6/6f/Kings_Cross_Railway_Station_Concourse_360x180%2C_London%2C_UK_-_Diliff.jpg/2560px-Kings_Cross_Railway_Station_Concourse_360x180%2C_London%2C_UK_-_Diliff.jpg" />
+      </pattern>
+    </defs>
+    <rect id="patternRect_RotatableScaling" x="-1200" y="-600" width="3000" height="1500"
+      fill="url(#tilePattern_RotatableScaling)" filter="url(#360mapRotatableScalingFilter)" />
+    <script>
+      draggablePattern('patternRect_RotatableScaling', 'tilePattern_RotatableScaling', 1500, 750, null, null);
+    </script>
+  </svg>
+
+  <svg width="600" height="300" viewBox="0 0 600 300">
+    <defs>
+      <filter id="filter" x="0" y="0" width="100%" height="100%" filterUnits="userSpaceOnUse"
+        color-interpolation-filters="sRGB">
+        <feImage xlink:href="./mapimgs/map_scale=146.488_src=1580x790_dst=600x300_hfov=135.png" result="map" />
+        <feDisplacementMap in="SourceGraphic" in2="map" scale="146.488" xChannelSelector="R" yChannelSelector="G" />
+      </filter>
+      <pattern id="tilePattern" patternUnits="userSpaceOnUse" x="-490" y="-245" width="1580" height="790">
+        <image x="0" y="0" width="1580" height="790"
+          xlink:href="https://upload.wikimedia.org/wikipedia/commons/thumb/6/6f/Kings_Cross_Railway_Station_Concourse_360x180%2C_London%2C_UK_-_Diliff.jpg/2560px-Kings_Cross_Railway_Station_Concourse_360x180%2C_London%2C_UK_-_Diliff.jpg" />
+      </pattern>
+    </defs>
+    <rect id="patternRect" x="-490" y="-245" width="1580" height="790" fill="url(#tilePattern)" filter="url(#filter)" />
+    <script>
+      draggablePattern('patternRect', 'tilePattern', 790, 395, null, null);
+    </script>
+  </svg>
+
+  <svg width="600" height="300" viewBox="0 0 600 300">
+    <defs>
+      <filter id="filter2" x="0" y="0" width="100%" height="100%" filterUnits="userSpaceOnUse"
+        color-interpolation-filters="sRGB">
+        <feImage xlink:href="./mapimgs/map_scale=254.096_src=1980x990_dst=600x300_hfov=135.png" result="map" />
+        <feDisplacementMap in="SourceGraphic" in2="map" scale="254.096" xChannelSelector="R" yChannelSelector="G" />
+      </filter>
+      <pattern id="tilePattern2" patternUnits="userSpaceOnUse" x="-690" y="-345" width="1980" height="990">
+        <image x="0" y="0" width="1980" height="990"
+          xlink:href="https://upload.wikimedia.org/wikipedia/commons/thumb/6/6f/Kings_Cross_Railway_Station_Concourse_360x180%2C_London%2C_UK_-_Diliff.jpg/2560px-Kings_Cross_Railway_Station_Concourse_360x180%2C_London%2C_UK_-_Diliff.jpg" />
+      </pattern>
+    </defs>
+    <rect id="patternRect2" x="-690" y="-345" width="1980" height="990" fill="url(#tilePattern2)"
+      filter="url(#filter2)" />
+    <script>
+      draggablePattern('patternRect2', 'tilePattern2', 990, 495, null, null);
+    </script>
+  </svg>
+
+</html>

@@ -11,14 +11,14 @@ function draggablePattern(rectImgId, tilePatternId, halfWidth, halfHeight, lockS
   let defaultPos = { x: parseInt(tilePattern.getAttribute('x')), y: parseInt(tilePattern.getAttribute('y')) };
   let currentPos = { x: parseInt(tilePattern.getAttribute('x')), y: parseInt(tilePattern.getAttribute('y')) };
 
-  const updatePosition = (axis, halfSize) => {
-    currentPos[axis] = event[`client${axis.toUpperCase()}`] - startPos[axis];
+  const updatePosition = (axis, halfSize, clientPos) => {
+    currentPos[axis] = clientPos - startPos[axis];
     if (currentPos[axis] > halfSize) {
       currentPos[axis] = -halfSize;
-      startPos[axis] = event[`client${axis.toUpperCase()}`] - currentPos[axis];
+      startPos[axis] = clientPos - currentPos[axis];
     } else if (currentPos[axis] < -halfSize) {
       currentPos[axis] = halfSize;
-      startPos[axis] = event[`client${axis.toUpperCase()}`] - currentPos[axis];
+      startPos[axis] = clientPos - currentPos[axis];
     }
     tilePattern.setAttribute(axis, currentPos[axis]);
   };
@@ -40,6 +40,8 @@ function draggablePattern(rectImgId, tilePatternId, halfWidth, halfHeight, lockS
     startDrag(e.clientX, e.clientY);
   });
   rectImg.addEventListener('touchstart', (e) => {
+    console.log("touchstart")
+    console.log(e)
     const touch = e.touches[0];
     startDrag(touch.clientX, touch.clientY);
   });

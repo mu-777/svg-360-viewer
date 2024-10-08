@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+  <script src="./draggablePattern.js"> </script>
+</head>
+
+<body class="markdown-body">
+  <svg width="600" height="300" viewBox="0 0 600 300">
+    <defs>
+      <filter id="360mapScalingFilter" x="0" y="0" width="100%" height="100%" filterUnits="userSpaceOnUse"
+        color-interpolation-filters="sRGB">
+        <feImage xlink:href="./mapimgs/map_scale=254.096_src=1980x990_dst=600x300_hfov=135.png" result="map" />
+        <feOffset in="SourceGraphic" result="offsettedsrc" dx="-690" dy="-345" />
+        <feDisplacementMap in="offsettedsrc" in2="map" scale="254.096" xChannelSelector="R" yChannelSelector="G" />
+      </filter>
+    </defs>
+    <image x="0" y="0" width="1980" height="990"
+      xlink:href="https://upload.wikimedia.org/wikipedia/commons/thumb/6/6f/Kings_Cross_Railway_Station_Concourse_360x180%2C_London%2C_UK_-_Diliff.jpg/1024px-Kings_Cross_Railway_Station_Concourse_360x180%2C_London%2C_UK_-_Diliff.jpg"
+      preserveAspectRatio="xMidYMid slice" filter="url(#360mapScalingFilter)" />
+  </svg>
+</html>
