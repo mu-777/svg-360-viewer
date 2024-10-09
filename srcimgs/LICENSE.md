@@ -1,0 +1,1 @@
+- Kings Cross Railway Station Concourse 360x180, London, UK - Diliff, CC BY-SA 3.0 <https://creativecommons.org/licenses/by-sa/3.0>, ウィキメディア・コモンズ経由で
