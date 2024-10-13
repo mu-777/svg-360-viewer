@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+  <style>
+    .centering {
+      display: grid;
+      align-items: center;
+      justify-items: center;
+      width: 1200px;
+    }
+  </style>
+</head>
+
+<body class="markdown-body">
+  <p>
+    <label for="switch">
+      Auto: <input type="checkbox" id="autoSwitch" />
+    </label>
+  </p>
+  <p class="centering">
+    <input type="range" id="rectSlider" min="0" max="600" value="300" style="width: 600px;" />
+  </p>
+  <p class="centering">
+    <svg id="svgImage" width="1200" height="300">
+      <pattern id="tile" patternUnits="userSpaceOnUse" x="300" y="0" width="600" height="300">
+        <image href="./srcimgs/1024px-Kings_Cross_Railway_Station_Concourse_360x180%2C_London%2C_UK_-_Diliff.jpg"
+          width="600" height="300" />
+      </pattern>
+      <rect id="patternRect" x="0" y="0" width="1200" height="300" fill="url(#tile)" />
+      <image id="usedPx" x="300" style="mix-blend-mode: screen;" href="./mapimgs/src_used_px_600to600.jpg" />
+      <rect id="renderRect" x="300" y="0" width="600" height="300" stroke="red" stroke-width="2" fill="transparent" />\
+    </svg>
+  </p>
+  <p class="centering">
+    <svg width="1200" height="300" viewBox="0 0 600 300">
+      <defs>
+        <filter id="360mapRotatableFilter" x="0" y="0" width="100%" height="100%" color-interpolation-filters="sRGB">
+          <feImage xlink:href="./mapimgs/map_scale=375.000_src=600x300_dst=600x300_hfov=135.png" result="map" />
+          <feDisplacementMap in="SourceGraphic" in2="map" scale="375" xChannelSelector="R" yChannelSelector="G" />
+        </filter>
+        <pattern id="tilePattern_Rotatable" patternUnits="userSpaceOnUse" x="0" y="0" width="600" height="300">
+          <image href="./srcimgs/1024px-Kings_Cross_Railway_Station_Concourse_360x180%2C_London%2C_UK_-_Diliff.jpg"
+            width="600" height="300" />
+        </pattern>
+      </defs>
+      <rect id="patternRect_Rotatable" x="0" y="0" width="600" height="300" fill="url(#tilePattern_Rotatable)"
+        filter="url(#360mapRotatableFilter)" />
+    </svg>
+  </p>
+
+  <script>
+    const rectMap = document.getElementById('renderRect');
+    const usedPx = document.getElementById('usedPx');
+    const rectResult = document.getElementById('patternRect_Rotatable');
+    const tile = document.getElementById('tilePattern_Rotatable');
+    const slider = document.getElementById('rectSlider');
+    const autoSwitch = document.getElementById('autoSwitch');
+
+    const step = 1;
+    const updateAttrs = (sliderVal) => {
+      rectMap.setAttribute('x', sliderVal);
+      usedPx.setAttribute('x', sliderVal);
+      rectResult.setAttribute('x', sliderVal - 300);
+      // tile.setAttribute('x', -(sliderVal-300)*0.5);
+    }
+    slider.addEventListener('input', (e) => {
+      const sliderVal = parseInt(e.target.value);
+      updateAttrs(sliderVal);
+    });
+
+    setInterval(() => {
+      if (autoSwitch.checked) {
+        let sliderVal = parseInt(slider.value) + step;
+        if (sliderVal >= 600) {
+          sliderVal = 1;
+        } else if (sliderVal <= 0) {
+          sliderVal = 599;
+        }
+        updateAttrs(sliderVal);
+        slider.value = sliderVal;
+      }
+    }, 10);
+  </script>
+
+</html>
