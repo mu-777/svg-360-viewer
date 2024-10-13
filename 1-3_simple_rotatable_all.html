@@ -2,9 +2,11 @@
 <html lang="ja">
 
 <head>
+  <script src="./draggablePattern.js"> </script>
 </head>
 
 <body class="markdown-body">
+  <input type="checkbox" id="horizontalLockSwitch" hidden />
   <svg width="600" height="300" viewBox="0 0 600 300">
     <defs>
       <filter id="360mapRotatableFilter" x="0" y="0" width="100%" height="100%" color-interpolation-filters="sRGB">
@@ -19,34 +21,7 @@
     <rect id="patternRect_Rotatable" x="0" y="0" width="600" height="300" fill="url(#tilePattern_Rotatable)"
       filter="url(#360mapRotatableFilter)" />
     <script>
-      const rectImg = document.getElementById('patternRect_Rotatable');
-      const tilePattern = document.getElementById('tilePattern_Rotatable');
-      const halfWidth = 300;
-      let isDragging = false;
-      let startPos = 0;
-      let currentPos = parseInt(tilePattern.getAttribute('x'));
-
-      rectImg.addEventListener('mousedown', (e) => {
-        isDragging = true;
-        startPos = e.clientX - currentPos;
-      });
-
-      window.addEventListener('mousemove', (e) => {
-        if (isDragging) {
-          currentPos = e.clientX - startPos;
-          if (currentPos > halfWidth) {
-            currentPos = -halfWidth;
-            startPos = e.clientX - currentPos;
-          } else if (currentPos < -halfWidth) {
-            currentPos = halfWidth;
-            startPos = e.clientX - currentPos;
-          }
-          tilePattern.setAttribute('x', currentPos);
-        }
-      });
-      window.addEventListener('mouseup', ()=>{
-        isDragging = false;
-      });    
+      draggablePattern('patternRect_Rotatable', 'tilePattern_Rotatable', 300, 150, 'horizontalLockSwitch', null);
     </script>
   </svg>
 
