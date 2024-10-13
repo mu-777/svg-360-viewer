@@ -77,7 +77,8 @@
         }
         mapImgEl.setAttribute('xlink:href', imageList[currentIndex].href);
         dispMapEl.setAttribute('scale', imageList[currentIndex].scale);
-      });
+        event.preventDefault();
+      }, { passive: false });
 
     </script>
   </svg>
