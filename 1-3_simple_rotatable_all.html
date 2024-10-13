@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+</head>
+
+<body class="markdown-body">
+  <svg width="600" height="300" viewBox="0 0 600 300">
+    <defs>
+      <filter id="360mapRotatableFilter" x="0" y="0" width="100%" height="100%" color-interpolation-filters="sRGB">
+        <feImage xlink:href="./mapimgs/map_scale=375.000_src=600x300_dst=600x300_hfov=135.png" result="map" />
+        <feDisplacementMap in="SourceGraphic" in2="map" scale="375" xChannelSelector="R" yChannelSelector="G" />
+      </filter>
+      <pattern id="tilePattern_Rotatable" patternUnits="userSpaceOnUse" x="0" y="0" width="600" height="300">
+        <image href="./srcimgs/1024px-Kings_Cross_Railway_Station_Concourse_360x180%2C_London%2C_UK_-_Diliff.jpg"
+          width="600" height="300" />
+      </pattern>
+    </defs>
+    <rect id="patternRect_Rotatable" x="0" y="0" width="600" height="300" fill="url(#tilePattern_Rotatable)"
+      filter="url(#360mapRotatableFilter)" />
+    <script>
+      const rectImg = document.getElementById('patternRect_Rotatable');
+      const tilePattern = document.getElementById('tilePattern_Rotatable');
+      const halfWidth = 300;
+      let isDragging = false;
+      let startPos = 0;
+      let currentPos = parseInt(tilePattern.getAttribute('x'));
+
+      rectImg.addEventListener('mousedown', (e) => {
+        isDragging = true;
+        startPos = e.clientX - currentPos;
+      });
+
+      window.addEventListener('mousemove', (e) => {
+        if (isDragging) {
+          currentPos = e.clientX - startPos;
+          if (currentPos > halfWidth) {
+            currentPos = -halfWidth;
+            startPos = e.clientX - currentPos;
+          } else if (currentPos < -halfWidth) {
+            currentPos = halfWidth;
+            startPos = e.clientX - currentPos;
+          }
+          tilePattern.setAttribute('x', currentPos);
+        }
+      });
+      window.addEventListener('mouseup', ()=>{
+        isDragging = false;
+      });    
+    </script>
+  </svg>
+
+</html>

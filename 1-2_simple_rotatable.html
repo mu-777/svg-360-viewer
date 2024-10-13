@@ -19,34 +19,34 @@
     <rect id="patternRect_Rotatable" x="0" y="0" width="600" height="300" fill="url(#tilePattern_Rotatable)"
       filter="url(#360mapRotatableFilter)" />
     <script>
-const rectImg = document.getElementById('patternRect_Rotatable');
-const tilePattern = document.getElementById('tilePattern_Rotatable');
-const halfWidth = 300;
-let isDragging = false;
-let startPos = 0;
-let currentPos = parseInt(tilePattern.getAttribute('x'));
+      const rectImg = document.getElementById('patternRect_Rotatable');
+      const tilePattern = document.getElementById('tilePattern_Rotatable');
+      const halfWidth = 300;
+      let isDragging = false;
+      let startPos = 0;
+      let currentPos = parseInt(tilePattern.getAttribute('x'));
 
-rectImg.addEventListener('mousedown', (e) => {
-  isDragging = true;
-  startPos = e.clientX - currentPos;
-});
+      rectImg.addEventListener('mousedown', (e) => {
+        isDragging = true;
+        startPos = e.clientX - currentPos;
+      });
 
-window.addEventListener('mousemove', (e) => {
-  if (isDragging) {
-    currentPos = e.clientX - startPos;
-    if (currentPos > halfWidth) {
-      currentPos = -halfWidth;
-      startPos = e.clientX - currentPos;
-    } else if (currentPos < -halfWidth) {
-      currentPos = halfWidth;
-      startPos = e.clientX - currentPos;
-    }
-    tilePattern.setAttribute('x', currentPos);
-  }
-});
-window.addEventListener('mouseup', ()=>{
-  isDragging = false;
-});    
+      window.addEventListener('mousemove', (e) => {
+        if (isDragging) {
+          currentPos = e.clientX - startPos;
+          if (currentPos > halfWidth) {
+            currentPos = -halfWidth;
+            startPos = e.clientX - currentPos;
+          } else if (currentPos < -halfWidth) {
+            currentPos = halfWidth;
+            startPos = e.clientX - currentPos;
+          }
+          tilePattern.setAttribute('x', currentPos);
+        }
+      });
+      window.addEventListener('mouseup', ()=>{
+        isDragging = false;
+      });    
     </script>
   </svg>
 

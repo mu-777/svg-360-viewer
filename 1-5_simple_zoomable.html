@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+  <script src="./draggablePattern.js"> </script>
+</head>
+
+<body class="markdown-body">
+  <svg width="600" height="300" viewBox="0 0 600 300">
+    <defs>
+      <filter id="360mapRotatableFilter" x="0" y="0" width="100%" height="100%" color-interpolation-filters="sRGB">
+        <feImage id='mapimg' xlink:href="./mapimgs/map_scale=375.000_src=600x300_dst=600x300_hfov=135.png"
+          result="map" />
+        <feDisplacementMap id="dispmap" in="SourceGraphic" in2="map" scale="375" xChannelSelector="R"
+          yChannelSelector="G" />
+      </filter>
+      <pattern id="tilePattern_Rotatable" patternUnits="userSpaceOnUse" x="0" y="0" width="600" height="300">
+        <image href="./srcimgs/1024px-Kings_Cross_Railway_Station_Concourse_360x180%2C_London%2C_UK_-_Diliff.jpg"
+          width="600" height="300" />
+      </pattern>
+    </defs>
+    <rect id="patternRect_Rotatable" x="0" y="0" width="600" height="300" fill="url(#tilePattern_Rotatable)"
+      filter="url(#360mapRotatableFilter)" />
+    <script>
+      draggablePattern('patternRect_Rotatable', 'tilePattern_Rotatable', 300, 150, null, null);
+
+      const rectImgEl = document.getElementById('patternRect_Rotatable');
+      const mapImgEl = document.getElementById('mapimg');
+      const dispMapEl = document.getElementById('dispmap');
+
+      const imageList = [
+        { href: './mapimgs/zoomable_600to600x300/map_scale=483.333_src=600x300_dst=600x300_hfov=70.png', scale: 483.333 },
+        { href: './mapimgs/zoomable_600to600x300/map_scale=475.000_src=600x300_dst=600x300_hfov=75.png', scale: 475.000 },
+        { href: './mapimgs/zoomable_600to600x300/map_scale=466.667_src=600x300_dst=600x300_hfov=80.png', scale: 466.667 },
+        { href: './mapimgs/zoomable_600to600x300/map_scale=458.333_src=600x300_dst=600x300_hfov=85.png', scale: 458.333 },
+        { href: './mapimgs/zoomable_600to600x300/map_scale=450.000_src=600x300_dst=600x300_hfov=90.png', scale: 450.000 },
+        { href: './mapimgs/zoomable_600to600x300/map_scale=441.667_src=600x300_dst=600x300_hfov=95.png', scale: 441.667 },
+        { href: './mapimgs/zoomable_600to600x300/map_scale=433.333_src=600x300_dst=600x300_hfov=100.png', scale: 433.333 },
+        { href: './mapimgs/zoomable_600to600x300/map_scale=425.000_src=600x300_dst=600x300_hfov=105.png', scale: 425.000 },
+        { href: './mapimgs/zoomable_600to600x300/map_scale=416.667_src=600x300_dst=600x300_hfov=110.png', scale: 416.667 },
+        { href: './mapimgs/zoomable_600to600x300/map_scale=408.333_src=600x300_dst=600x300_hfov=115.png', scale: 408.333 },
+        { href: './mapimgs/zoomable_600to600x300/map_scale=400.000_src=600x300_dst=600x300_hfov=120.png', scale: 400.000 },
+        { href: './mapimgs/zoomable_600to600x300/map_scale=391.667_src=600x300_dst=600x300_hfov=125.png', scale: 391.667 },
+        { href: './mapimgs/zoomable_600to600x300/map_scale=383.333_src=600x300_dst=600x300_hfov=130.png', scale: 383.333 },
+        { href: './mapimgs/zoomable_600to600x300/map_scale=375.000_src=600x300_dst=600x300_hfov=135.png', scale: 375.000 },
+        { href: './mapimgs/zoomable_600to600x300/map_scale=366.667_src=600x300_dst=600x300_hfov=140.png', scale: 366.667 },
+        { href: './mapimgs/zoomable_600to600x300/map_scale=358.333_src=600x300_dst=600x300_hfov=145.png', scale: 358.333 },
+        { href: './mapimgs/zoomable_600to600x300/map_scale=350.000_src=600x300_dst=600x300_hfov=150.png', scale: 350.000 },
+        { href: './mapimgs/zoomable_600to600x300/map_scale=341.667_src=600x300_dst=600x300_hfov=155.png', scale: 341.667 },
+        { href: './mapimgs/zoomable_600to600x300/map_scale=333.333_src=600x300_dst=600x300_hfov=160.png', scale: 333.333 },
+        { href: './mapimgs/zoomable_600to600x300/map_scale=325.000_src=600x300_dst=600x300_hfov=165.png', scale: 325.000 },
+        { href: './mapimgs/zoomable_600to600x300/map_scale=316.667_src=600x300_dst=600x300_hfov=170.png', scale: 316.667 },
+      ];
+
+      let currentIndex = 13;
+
+      const preloadImgCache = (() => {
+        let imagesLoaded = 0;
+        return imageList.map((item, index) => {
+          const img = new Image();
+          img.src = item.href;
+          img.onload = () => {
+            imagesLoaded++;
+            if (imagesLoaded === imageList.length) {
+              console.log('All images preloaded');
+            }
+          };
+          return img;
+        });
+      })()
+
+      rectImgEl.addEventListener('wheel', (event) => {
+        if (event.deltaY < 0) {
+          currentIndex = Math.max(currentIndex - 1, 0);
+        } else {
+          currentIndex = Math.min(currentIndex + 1, imageList.length - 1);
+        }
+        mapImgEl.setAttribute('xlink:href', imageList[currentIndex].href);
+        dispMapEl.setAttribute('scale', imageList[currentIndex].scale);
+      });
+
+    </script>
+  </svg>
+
+</html>
