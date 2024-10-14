@@ -26,27 +26,44 @@
       let startPos = 0;
       let currentPos = parseInt(tilePattern.getAttribute('x'));
 
-      rectImg.addEventListener('mousedown', (e) => {
+      const startDrag = (clientX) => {
         isDragging = true;
-        startPos = e.clientX - currentPos;
+        startPos = clientX - currentPos;
+      };
+      rectImg.addEventListener('mousedown', (e) => {
+        startDrag(e.clientX);
+      });
+      rectImg.addEventListener('touchstart', (e) => {
+        startDrag(e.touches[0].clientX);
       });
 
+      const updatePosition = (clientX) => {
+        currentPos = clientX - startPos;
+        if (currentPos > halfWidth) {
+          currentPos = -halfWidth;
+          startPos = clientX - currentPos;
+        } else if (currentPos < -halfWidth) {
+          currentPos = halfWidth;
+          startPos = clientX - currentPos;
+        }
+        tilePattern.setAttribute('x', currentPos);
+      }
       window.addEventListener('mousemove', (e) => {
         if (isDragging) {
-          currentPos = e.clientX - startPos;
-          if (currentPos > halfWidth) {
-            currentPos = -halfWidth;
-            startPos = e.clientX - currentPos;
-          } else if (currentPos < -halfWidth) {
-            currentPos = halfWidth;
-            startPos = e.clientX - currentPos;
-          }
-          tilePattern.setAttribute('x', currentPos);
+          updatePosition(e.clientX);
         }
       });
-      window.addEventListener('mouseup', ()=>{
+      window.addEventListener('touchmove', (e) => {
+        if (isDragging) {
+          updatePosition(e.touches[0].clientX);
+        }
+      });
+
+      const stopDrag = () => {
         isDragging = false;
-      });    
+      };
+      window.addEventListener('mouseup', stopDrag);
+      window.addEventListener('touchend', stopDrag);
     </script>
   </svg>
 
