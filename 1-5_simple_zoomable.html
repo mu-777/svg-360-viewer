@@ -98,7 +98,7 @@
           initialDistance = currentDistance;
           event.preventDefault();
         }
-      });
+      }, { passive: false });
       window.addEventListener('touchend', () => {
         initialDistance = null;
       });
