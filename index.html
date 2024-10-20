@@ -4,224 +4,458 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>SVG 360 Viewer Sample</title>
+  <title>Image Generation</title>
   <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="github-markdown.css" />
+  <!-- <link rel="stylesheet" href="github-markdown.css" /> -->
   <style>
-    .markdown-body {
+    /* Basic Reset */
+    * {
       box-sizing: border-box;
-      min-width: 200px;
-      max-width: 980px;
-      margin: 0 auto;
-      padding: 45px;
+      margin: 0;
+      padding: 0;
     }
 
-    @media (max-width: 767px) {
-      .markdown-body {
-        padding: 15px;
+    body {
+      font-family: Arial, sans-serif;
+      line-height: 1.6;
+      background-color: #f0f4f8;
+      color: #333;
+      padding: 20px;
+    }
+
+    header,
+    footer {
+      text-align: center;
+      padding: 10px 0;
+      margin-bottom: 10px;
+    }
+
+    section {
+      padding: 10px 0;
+      margin-bottom: 25px;
+    }
+
+    main {
+      max-width: 1000px;
+      margin: 0 auto;
+      background-color: white;
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
+
+    h1,
+    h2,
+    h3 {
+      color: #0358b3;
+    }
+
+    form {
+      margin-bottom: 20px;
+    }
+
+    form div {
+      margin-bottom: 10px;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 5px;
+      font-weight: bold;
+    }
+
+    input[type="number"],
+    input[type="url"] {
+      width: calc(100% - 22px);
+      padding: 10px;
+      margin: 5px 0;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      font-size: 16px;
+    }
+
+    input[type="number"]:focus,
+    input[type="url"]:focus {
+      border-color: #0358b3;
+      outline: none;
+    }
+
+    button {
+      width: calc(50% - 22px);
+      padding: 10px;
+      margin: 5px 0;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      font-size: 16px;
+      background-color: #0358b3;
+      color: white;
+      cursor: pointer;
+      border: none;
+      font-weight: bold;
+    }
+
+    button:hover {
+      background-color: #0056b3;
+    }
+
+    button:disabled {
+      background-color: #616161;
+      cursor: not-allowed;
+      opacity: 0.65;
+    }
+
+    canvas {
+      /* width: 100%; */
+      height: auto;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      margin-top: 10px;
+    }
+
+    svg {
+      border: 1px solid #ccc;
+      border-radius: 4px;
+    }
+
+    a {
+      text-decoration: none;
+    }
+
+    a:hover {
+      text-decoration: underline;
+    }
+
+    pre {
+      background-color: #f8f9fa;
+      padding: 10px;
+      border-radius: 4px;
+      overflow-x: auto;
+    }
+
+    footer {
+      margin-top: 20px;
+    }
+
+    .form-group {
+      margin-bottom: 15px;
+    }
+
+    small {
+      display: block;
+      color: #6c757d;
+      font-size: 0.875em;
+      margin-top: 2px;
+    }
+
+    @media (max-width: 600px) {
+      body {
+        padding: 10px;
       }
+
+      input[type="number"],
+      input[type="url"],
+      button {
+        width: calc(100% - 12px);
+      }
+    }
+
+    .centering {
+      display: grid;
+      align-items: center;
+      justify-items: center;
+      width: 100%;
+    }
+
+    .github-button {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      background-color: #24292e;
+      color: white;
+      text-decoration: none;
+      padding: 8px 12px;
+      border-radius: 4px;
+      font-size: 14px;
+      z-index: 1000;
+      /* Ensures the button stays on top */
+    }
+
+    .github-button img {
+      margin-right: 4px;
+      vertical-align: middle;
+    }
+
+    .copy-button-container {
+      display: flex;
+      justify-content: flex-end;
+      margin-bottom: 8px;
+    }
+
+    .copy-button {
+      width: calc(20% - 22px);
+      background-color: transparent;
+      border: none;
+      color: #0358b3;
+      cursor: pointer;
+      padding: 4px 8px;
+    }
+
+    .copy-button:hover {
+      background-color: transparent;
+      color: #0358b3;
+      font-weight: bold;
+      text-decoration: underline;
+    }
+    .copy-button:disabled {
+      display: none;
     }
   </style>
   <script src="./draggablePattern.js"> </script>
+  <script src="./gen_mapimg.js"> </script>
+  <script src="./utils.js"> </script>
+  <script src="https://cdn.jsdelivr.net/npm/prettier@2.3.2/standalone.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/prettier@2.3.2/parser-html.js"></script>
 </head>
 
-<body class="markdown-body">
+<body>
   <header>
-    <h1>SVG 360 Viewer Sample</h1>
-    <p>
-      Used image: Kings Cross Railway Station Concourse 360x180, London, UK - Diliff, CC BY-SA 3.0
-      &lt;https://creativecommons.org/licenses/by-sa/3.0&gt;, ウィキメディア・コモンズ経由で
-    </p>
+    <h1>Map Image Generator for SVG 360 View</h1>
+    <a href="https://github.com/mu-777/svg-360-viewer" target="_blank" class="github-button">
+      <img src="https://github.githubassets.com/images/modules/logos_page/GitHub-Mark.png" alt="GitHub"
+        style="width: 24px; vertical-align: middle;">
+      View on GitHub
+    </a>
   </header>
-  <section>
-    <h2>0. No filter(Equirectangular image)</h2>
-    <image x="0" y="0" width="600" height="300"
-      src="./srcimgs/1024px-Kings_Cross_Railway_Station_Concourse_360x180%2C_London%2C_UK_-_Diliff.jpg" />
-  </section>
+  <main>
+    <section aria-labelledby="input-section">
+      <h2>Input</h2>
+      <form id="mapGenForm">
+        <div>
+          <label for="dstWidth">View Image Width[px]:</label>
+          <small id="width-desc">Specify the width of the view image in pixels.</small>
+          <input type="number" id="dstWidth" value="600" required step="1" aria-describedby="width-desc">
+        </div>
+        <div>
+          <label for="dstHeight">View Image Height[px]:</label>
+          <small id="height-desc">Specify the height of the view image in pixels.</small>
+          <input type="number" id="dstHeight" value="300" required step="1" aria-describedby="height-desc">
+        </div>
+        <div>
+          <label for="dstHfovDeg">View Image Horizontal FoV[deg]:</label>
+          <small id="hfov-desc">Set the horizontal field of view in degrees.</small>
+          <input type="number" id="dstHfovDeg" value="135" required step="1" aria-describedby="hfov-desc">
+        </div>
+        <div class="centering">
+          <button type="submit">Generate Map Image</button>
+        </div>
+        <p>
+      </form>
+    </section>
 
-  <section>
-    <h2>1-1. Simple view(Src and Dst are the same resolution)</h2>
-    <svg id="simpleview" width="600" height="300" viewBox="0 0 600 300">
-      <defs>
-        <filter id="360mapSimpleFilter" x="0" y="0" width="100%" height="100%" filterUnits="userSpaceOnUse"
-          color-interpolation-filters="sRGB">
-          <feImage xlink:href="./mapimgs/map_scale=375.000_src=600x300_dst=600x300_hfov=135.png" result="map" />
-          <feDisplacementMap in="SourceGraphic" in2="map" scale="375" xChannelSelector="R" yChannelSelector="G" />
-        </filter>
-      </defs>
-      <image x="0" y="0" width="600" height="300"
-        xlink:href="./srcimgs/1024px-Kings_Cross_Railway_Station_Concourse_360x180%2C_London%2C_UK_-_Diliff.jpg"
-        preserveAspectRatio="xMidYMid slice" filter="url(#360mapSimpleFilter)" />
-    </svg>
-  </section>
+    <section aria-labelledby="result-section">
+      <h2>Result: Generated Map Image</h2>
+      <div class="centering">
+        <canvas id="mapImgCanvas" width="600" height="300" aria-label="Generated map image canvas"></canvas>
+      </div>
+      <div>
+        <label for="srcWidth">Input Image Width[ps]:</label>
+        <input type="number" id="srcWidth" readonly>
+      </div>
+      <div>
+        <label for="srcHeight">Input Image Height[ps]:</label>
+        <input type="number" id="srcHeight" readonly>
+      </div>
+      <div>
+        <label for="mapScale">DisplacementMap Scale:</label>
+        <input type="number" id="mapScale" readonly>
+      </div>
+      <div class="centering">
+        <button id="mapImgDLBtn" disabled>Download Map Image</button>
+      </div>
+    </section>
 
-  <section>
-    <h2>1-2. Simple view(Src and Dst have different resolutions)</h2>
-    <svg id="simpleview2" width="600" height="400" viewBox="0 0 600 400">
-      <defs>
-        <filter id="360mapSimpleFilter2" x="0" y="0" width="100%" height="100%" filterUnits="userSpaceOnUse"
-          color-interpolation-filters="sRGB">
-          <feImage xlink:href="./mapimgs/map_scale=300.000_src=800x400_dst=600x400_hfov=135.png" result="map" />
-          <feOffset in="SourceGraphic" result="offsettedsrc" dx="-100" dy="0" />
-          <feDisplacementMap in="offsettedsrc" in2="map" scale="300" xChannelSelector="R" yChannelSelector="G" />
-        </filter>
-      </defs>
-      <image x="0" y="0" width="800" height="400"
-        xlink:href="./srcimgs/1024px-Kings_Cross_Railway_Station_Concourse_360x180%2C_London%2C_UK_-_Diliff.jpg"
-        preserveAspectRatio="xMidYMid slice" filter="url(#360mapSimpleFilter2)" />
-    </svg>
-  </section>
+    <section aria-labelledby="svg-view-section">
+      <h2>Sample: SVG 360 View</h2>
+      <form id="viewForm">
+        <div>
+          <label for="srcImgUrl">Target Equirectangular Image URL:</label>
+          <small id="srcImg-desc">
+            Provide the URL of the equirectangular image. Equirectangular image examples: <a
+              href="https://commons.wikimedia.org/w/index.php?title=Category:360%C2%B0_panoramas_with_equirectangular_projection">360°
+              panoramas with equirectangular projection, Wikimedia Commons</a>
+          </small>
+          <input type="url" id="srcImgUrl" required aria-describedby="srcImg-desc"
+            value="https://upload.wikimedia.org/wikipedia/commons/thumb/6/6f/Kings_Cross_Railway_Station_Concourse_360x180%2C_London%2C_UK_-_Diliff.jpg/2560px-Kings_Cross_Railway_Station_Concourse_360x180%2C_London%2C_UK_-_Diliff.jpg">
+        </div>
+        <div class="centering">
+          <button type="submit" id="showViewBtn" disabled>Show SVG 360 View</button>
+        </div>
+        </p>
+      </form>
+      <div id="svg360ViewImpl" class="centering">
+        <svg id="svg360View" width="600" height="300" viewBox="0 0 600 300">
+          <defs>
+            <filter id="svg360Filter" x="0" y="0" width="100%" height="100%" filterUnits="userSpaceOnUse"
+              color-interpolation-filters="sRGB">
+              <feImage id="svg360MapImg" result="map" xlink:href="" />
+              <feDisplacementMap id="svg360MapProcess" in="SourceGraphic" in2="map" scale="254.096" xChannelSelector="R"
+                yChannelSelector="G" />
+            </filter>
+            <pattern id="tilePattern" patternUnits="userSpaceOnUse" x="-690" y="-345" width="1980" height="990">
+              <image id="srcImg" x="0" y="0" width="1980" height="990" xlink:href="" />
+            </pattern>
+          </defs>
+          <rect id="patternRect" x="-690" y="-345" width="1980" height="990" fill="url(#tilePattern)"
+            filter="url(#svg360Filter)" />
+          <script id="svg360Script">
+          </script>
+        </svg>
+      </div>
+      <div aria-labelledby="code-output">
+        <pre>
+          <code id="svg360code">
+  SVG 360 View Code will be generated here.
+        </code>
+      </pre>
+        <div class="copy-button-container">
+          <button type="button" id="copyCodeBtn" class="copy-button" disabled>Copy to Clipboard</button>
+        </div>
+      </div>
+    </section>
+  </main>
 
+  <footer>
+    <p>mu-777, https://mu-777.hatenablog.com/</p>
+  </footer>
 
-  <section>
-    <h2>2-1. Rotatable View</h2>
-    <p>
-      <label for="switch">
-        Horizontal Lock: <input type="checkbox" id="horizontalLockSwitch" checked />
-      </label>
-    </p>
-    <p>
-      <button type="button" id="CenterResetButton"> Center Reset</button>
-    </p>
-    <svg width="600" height="300" viewBox="0 0 600 300">
-      <defs>
-        <filter id="360mapRotatableFilter" x="0" y="0" width="100%" height="100%" color-interpolation-filters="sRGB">
-          <feImage xlink:href="./mapimgs/map_scale=375.000_src=600x300_dst=600x300_hfov=135.png" result="map" />
-          <feDisplacementMap in="SourceGraphic" in2="map" scale="375" xChannelSelector="R" yChannelSelector="G" />
-        </filter>
-        <pattern id="tilePattern_Rotatable" patternUnits="userSpaceOnUse" x="0" y="0" width="600" height="300">
-          <image
-            href="./srcimgs/1024px-Kings_Cross_Railway_Station_Concourse_360x180%2C_London%2C_UK_-_Diliff.jpg"
-            width="600" height="300" />
-        </pattern>
-      </defs>
-      <rect id="patternRect_Rotatable" x="0" y="0" width="600" height="300" fill="url(#tilePattern_Rotatable)"
-        filter="url(#360mapRotatableFilter)" />
-      <script>
-        draggablePattern('patternRect_Rotatable', 'tilePattern_Rotatable', 300, 150, 'horizontalLockSwitch', 'CenterResetButton');
-      </script>
-    </svg>
-  </section>
+  <script>
+    document.getElementById("mapGenForm").addEventListener("submit", (event) => {
+      event.preventDefault();
 
-  <section>
-    <h2>2-2. Multiple Synced Rotatable View</h2>
+      const dstWidth = parseInt(document.getElementById("dstWidth").value, 10);
+      const dstHeight = parseInt(document.getElementById("dstHeight").value, 10);
+      const dstHfovDeg = parseInt(document.getElementById("dstHfovDeg").value, 10);
+      const canvas = document.getElementById("mapImgCanvas");
 
-  </section>
+      const { srcWidth, srcHeight } = calcSrcImgBestResolution(dstWidth, dstHeight, dstHfovDeg);
+      const offsetX = (srcWidth - dstWidth) / 2;
+      const offsetY = (srcHeight - dstHeight) / 2;
 
-  <section>
-    <h2>3-1. Multiple Steps Map</h2>
-    <p>
-      <label id="stepSliderLabel" for="range"> Step8: </label>
-      <input type="range" id="stepSlider" min="0" max="8" value="8" style="width: 550px;">
-    </p>
-    <p>
-      <button type="button" id="CenterResetButton_multiStep"> Center Reset</button>
-    </p>
-    <svg width="600" height="300" viewBox="0 0 3000 1500">
-      <defs>
-        <filter id="360mapStepsFilter" x="0" y="0" width="100%" height="100%" filterUnits="userSpaceOnUse"
-          color-interpolation-filters="sRGB">
-          <feImage
-            xlink:href="./mapimgs/stepmap_3000to3000/map_1-8_scale=255.000_src=3000x1500_dst=3000x1500_hfov=135.png"
-            result="stepmap1" />
-          <feImage
-            xlink:href="./mapimgs/stepmap_3000to3000/map_2-8_scale=255.000_src=3000x1500_dst=3000x1500_hfov=135.png"
-            result="stepmap2" />
-          <feImage
-            xlink:href="./mapimgs/stepmap_3000to3000/map_3-8_scale=255.000_src=3000x1500_dst=3000x1500_hfov=135.png"
-            result="stepmap3" />
-          <feImage
-            xlink:href="./mapimgs/stepmap_3000to3000/map_4-8_scale=255.000_src=3000x1500_dst=3000x1500_hfov=135.png"
-            result="stepmap4" />
-          <feImage
-            xlink:href="./mapimgs/stepmap_3000to3000/map_5-8_scale=255.000_src=3000x1500_dst=3000x1500_hfov=135.png"
-            result="stepmap5" />
-          <feImage
-            xlink:href="./mapimgs/stepmap_3000to3000/map_6-8_scale=255.000_src=3000x1500_dst=3000x1500_hfov=135.png"
-            result="stepmap6" />
-          <feImage
-            xlink:href="./mapimgs/stepmap_3000to3000/map_7-8_scale=255.000_src=3000x1500_dst=3000x1500_hfov=135.png"
-            result="stepmap7" />
-          <feImage
-            xlink:href="./mapimgs/stepmap_3000to3000/map_8-8_scale=255.000_src=3000x1500_dst=3000x1500_hfov=135.png"
-            result="stepmap8" />
+      const mapper = new EquiToSphereMapper(srcWidth, srcHeight, dstHfovDeg);
+      const { displacementMap, scale } = genMapImg(dstWidth, dstHeight, offsetX, offsetY, mapper);
 
-          <feDisplacementMap in="SourceGraphic" in2="stepmap1" result="out1" scale="255" xChannelSelector="R"
-            yChannelSelector="G" />
-          <feDisplacementMap in="out1" in2="stepmap2" result="out2" scale="255" xChannelSelector="R"
-            yChannelSelector="G" />
-          <feDisplacementMap in="out2" in2="stepmap3" result="out3" scale="255" xChannelSelector="R"
-            yChannelSelector="G" />
-          <feDisplacementMap in="out3" in2="stepmap4" result="out4" scale="255" xChannelSelector="R"
-            yChannelSelector="G" />
-          <feDisplacementMap in="out4" in2="stepmap5" result="out5" scale="255" xChannelSelector="R"
-            yChannelSelector="G" />
-          <feDisplacementMap in="out5" in2="stepmap6" result="out6" scale="255" xChannelSelector="R"
-            yChannelSelector="G" />
-          <feDisplacementMap in="out6" in2="stepmap7" result="out7" scale="255" xChannelSelector="R"
-            yChannelSelector="G" />
-          <feDisplacementMap in="out7" in2="stepmap8" result="out8" scale="255" xChannelSelector="R"
-            yChannelSelector="G" />
-        </filter>
-        <pattern id="tilePattern_Multistep" patternUnits="userSpaceOnUse" x="0" y="0" width="3000" height="1500">
-          <image x="0" y="0" width="3000" height="1500"
-            xlink:href="./srcimgs/2560px-Kings_Cross_Railway_Station_Concourse_360x180%2C_London%2C_UK_-_Diliff.jpg" />
-        </pattern>
-      </defs>
-      <rect id="patternRect_Multistep" x="0" y="0" width="3000" height="1500" fill="url(#tilePattern_Multistep)"
-        filter="url(#360mapStepsFilter)" />
-      <script>
-        draggablePattern('patternRect_Multistep', 'tilePattern_Multistep', 1500, 7500, null, 'CenterResetButton_multiStep');
+      const ctx = canvas.getContext("2d");
+      canvas.width = dstWidth;
+      canvas.height = dstHeight;
+      ctx.putImageData(new ImageData(displacementMap, dstWidth, dstHeight), 0, 0);
 
-        (function () {
-          const stepSlider = document.getElementById('stepSlider');
-          const stepSliderLabel = document.getElementById('stepSliderLabel');
-          const displacementFilter = document.getElementById('360mapStepsFilter');
-          const displacementSteps = [...displacementFilter.querySelectorAll('feDisplacementMap')].sort((a, b) => {
-            return (a.getAttribute("result") < b.getAttribute("result")) ? -1 : 1;
-          });
-          stepSlider.addEventListener('input', () => {
-            const selectedValue = parseInt(stepSlider.value);
-            stepSliderLabel.innerText = (selectedValue == 0) ? "No filter: " : `Step${selectedValue}: `;
-            displacementSteps.forEach((step, index) => {
-              console.log(index, selectedValue)
-              if (index < selectedValue) {
-                console.log(index, selectedValue)
-                step.setAttribute('scale', "255");
-              } else {
-                step.setAttribute('scale', "0");
-              }
-            });
-          });
-        })()
-      </script>
-    </svg>
-  </section>
+      document.getElementById("srcWidth").value = srcWidth;
+      document.getElementById("srcHeight").value = srcHeight;
+      document.getElementById("mapScale").value = scale.toPrecision(6);
 
-  <section>
-    <h2>3-2: Scaling Map</h2>
-    <p>
-      <button type="button" id="CenterResetButton_RotatableScaling"> Center Reset</button>
-    </p>
-    <svg width="600" height="300" viewBox="0 0 600 300">
-      <defs>
-        <filter id="360mapRotatableScalingFilter" x="0" y="0" width="100%" height="100%" filterUnits="userSpaceOnUse"
-          color-interpolation-filters="sRGB">
-          <feImage xlink:href="./mapimgs/map_scale=254.096_src=1980x990_dst=600x300_hfov=135.png" result="map" />
-          <feDisplacementMap in="SourceGraphic" in2="map" scale="254.096" xChannelSelector="R" yChannelSelector="G" />
-        </filter>
-        <pattern id="tilePattern_RotatableScaling" patternUnits="userSpaceOnUse" x="-690" y="-345" width="1980" height="990">
-          <image x="0" y="0" width="1980" height="990"
-            xlink:href="./srcimgs/2560px-Kings_Cross_Railway_Station_Concourse_360x180%2C_London%2C_UK_-_Diliff.jpg" />
-        </pattern>
-      </defs>
-      <rect id="patternRect_RotatableScaling" x="-690" y="-345" width="1980" height="990" fill="url(#tilePattern_RotatableScaling)"
-        filter="url(#360mapRotatableScalingFilter)" />
-      <script>
-        draggablePattern('patternRect_RotatableScaling', 'tilePattern_RotatableScaling', 990, 495, null, 'CenterResetButton_RotatableScaling');
-      </script>
-    </svg>
-  </section>
+      document.getElementById('mapImgDLBtn').disabled = false;
+      document.getElementById('showViewBtn').disabled = false;
+    });
+
+    document.getElementById("viewForm").addEventListener("submit", (event) => {
+      event.preventDefault();
+
+      const srcImgUrl = document.getElementById("srcImgUrl").value
+      isValidImageUrl(srcImgUrl).then(isValid => {
+        if (!isValid) {
+          return;
+        }
+
+        const srcWidth = parseInt(document.getElementById("srcWidth").value, 10);
+        const srcHeight = parseInt(document.getElementById("srcHeight").value, 10);
+        const dstWidth = parseInt(document.getElementById("dstWidth").value, 10);
+        const dstHeight = parseInt(document.getElementById("dstHeight").value, 10);
+        const offsetX = (srcWidth - dstWidth) / 2;
+        const offsetY = (srcHeight - dstHeight) / 2;
+        const mapScale = parseFloat(document.getElementById("mapScale").value, 10);
+        const mapImgCanvas = document.getElementById("mapImgCanvas");
+
+        const svgView = document.getElementById("svg360View");
+        svgView.setAttribute("width", dstWidth);
+        svgView.setAttribute("height", dstHeight);
+        svgView.setAttribute("viewBox", `0 0 ${dstWidth} ${dstHeight}`);
+
+        const svgMapImg = document.getElementById("svg360MapImg");
+        svgMapImg.setAttribute("xlink:href", mapImgCanvas.toDataURL());
+
+        const svgMapProcess = document.getElementById("svg360MapProcess");
+        svgMapProcess.setAttribute("scale", mapScale);
+
+        const tilePattern = document.getElementById("tilePattern");
+        tilePattern.setAttribute("x", -offsetX);
+        tilePattern.setAttribute("y", -offsetY);
+        tilePattern.setAttribute("width", srcWidth);
+        tilePattern.setAttribute("height", srcHeight);
+
+        const srcImg = document.getElementById("srcImg");
+        srcImg.setAttribute("width", srcWidth);
+        srcImg.setAttribute("height", srcHeight);
+        srcImg.setAttribute("xlink:href", srcImgUrl);
+
+        const rectImg = document.getElementById("patternRect");
+        rectImg.setAttribute("x", -offsetX);
+        rectImg.setAttribute("y", -offsetY);
+        rectImg.setAttribute("width", srcWidth);
+        rectImg.setAttribute("height", srcHeight);
+
+        draggablePattern('patternRect', 'tilePattern', srcWidth / 2, srcHeight / 2, null, null);
+
+        const targetElement = document.getElementById('svg360ViewImpl');
+        const domParser = new DOMParser();
+        const dom = domParser.parseFromString(targetElement.innerHTML, "text/html");
+        const svgMapImg_code = dom.getElementById("svg360MapImg");
+        svgMapImg_code.setAttribute("xlink:href", "<Put Downloaded Map Image URL>");
+        const srcImg_code = dom.getElementById("srcImg");
+        srcImg_code.setAttribute("xlink:href", "<Put Target Equirectangular Image URL>");
+        const svg360Script_code = dom.getElementById("svg360Script");
+        svg360Script_code.textContent = `draggablePattern('patternRect', 'tilePattern', ${srcWidth / 2}, ${srcHeight / 2}, null, null);        `
+
+        const htmlCodeString = dom.getElementsByTagName('body')[0].innerHTML;
+        const codeElement = document.getElementById('svg360code');
+        var formattedHtml = prettier.format(htmlCodeString, {
+          parser: "html",
+          plugins: prettierPlugins,
+          printWidth: 500,
+        });
+        const comment = `<!-- ADD "<script src='<path>/draggablePattern.js'> </script>" in head tag -->;`
+        codeElement.textContent = `${comment}\n${formattedHtml}`;
+
+        document.getElementById('copyCodeBtn').disabled = false;
+      });
+    });
+
+    document.getElementById('mapImgDLBtn').addEventListener('click', () => {
+      const srcWidth = parseInt(document.getElementById("srcWidth").value, 10);
+      const srcHeight = parseInt(document.getElementById("srcHeight").value, 10);
+      const dstWidth = parseInt(document.getElementById("dstWidth").value, 10);
+      const dstHeight = parseInt(document.getElementById("dstHeight").value, 10);
+      const dstHfovDeg = parseInt(document.getElementById("dstHfovDeg").value, 10);
+      const mapScale = parseFloat(document.getElementById("mapScale").value, 10);
+
+      const mapImgCanvas = document.getElementById("mapImgCanvas");
+      const imageData = mapImgCanvas.toDataURL('image/png');
+
+      const link = document.createElement('a');
+      link.href = imageData;
+      link.download =
+        `svg360_map_scale=${mapScale}_src=${srcWidth}x${srcHeight}_dst=${dstWidth}x${dstHeight}_hfov=${dstHfovDeg}.png`;
+      link.click();
+    });
+
+    document.getElementById('copyCodeBtn').addEventListener('click', () => {
+      const codeText = document.getElementById('svg360code').innerText;
+      navigator.clipboard.writeText(codeText).then(() => {
+        alert('Code copied to clipboard!');
+      }).catch(err => {
+        console.error('Failed to copy: ', err);
+      });
+    })
+  </script>
 </body>
 
 </html>
