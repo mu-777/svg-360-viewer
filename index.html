@@ -7,6 +7,15 @@
   <title>Map Image Generator for SVG 360 View</title>
   <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
   <!-- <link rel="stylesheet" href="github-markdown.css" /> -->
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-8YT0WHEQ3E"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag() { dataLayer.push(arguments); }
+    gtag('js', new Date());
+
+    gtag('config', 'G-8YT0WHEQ3E');
+  </script>
   <style>
     /* Basic Reset */
     * {
@@ -128,6 +137,7 @@
     pre {
       background-color: #f8f9fa;
       padding: 10px;
+      margin: 15px;
       border-radius: 4px;
       overflow-x: auto;
     }
@@ -206,6 +216,7 @@
       font-weight: bold;
       text-decoration: underline;
     }
+
     .copy-button:disabled {
       display: none;
     }
@@ -227,6 +238,15 @@
     </a>
   </header>
   <main>
+    <section aria-labelledby="lead-section" class="centering">
+      <p>
+        Generate map images and apply SVG filters to display equirectangular images in 360-degree panoramic views.
+      </p>
+      <p>
+        Details in <a
+          href="https://mu-777.hatenablog.com/entry/2024/10/13/174630">https://mu-777.hatenablog.com/entry/2024/10/13/174630</a>
+      </p>
+    </section>
     <section aria-labelledby="input-section">
       <h2>Input</h2>
       <form id="mapGenForm">
@@ -258,11 +278,11 @@
         <canvas id="mapImgCanvas" width="600" height="300" aria-label="Generated map image canvas"></canvas>
       </div>
       <div>
-        <label for="srcWidth">Input Image Width[ps]:</label>
+        <label for="srcWidth">Input Image Width[px]:</label>
         <input type="number" id="srcWidth" readonly>
       </div>
       <div>
-        <label for="srcHeight">Input Image Height[ps]:</label>
+        <label for="srcHeight">Input Image Height[px]:</label>
         <input type="number" id="srcHeight" readonly>
       </div>
       <div>
@@ -270,7 +290,7 @@
         <input type="number" id="mapScale" readonly>
       </div>
       <div class="centering">
-        <button id="mapImgDLBtn" disabled>Download Map Image</button>
+        <button id="mapImgDLBtn" disabled>Download Map Image (If you want)</button>
       </div>
     </section>
 
