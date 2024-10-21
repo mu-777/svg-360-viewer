@@ -454,8 +454,8 @@
           plugins: prettierPlugins,
           printWidth: 500,
         });
-        const comment = `<!-- ADD "<script src='<path>/draggablePattern.js'> </script>" in head tag -->;`
-        codeElement.textContent = `${comment}\n${formattedHtml}`;
+        const comment = `<!-- DOWNLOAD https://github.com/mu-777/svg-360-viewer/blob/master/draggablePattern.js and ADD "<script src='<your_path>/draggablePattern.js'> </script>" -->;`
+        codeElement.textContent = `\n${comment}\n${formattedHtml}`;
 
         document.getElementById('copyCodeBtn').disabled = false;
       });
