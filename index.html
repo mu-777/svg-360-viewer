@@ -5,17 +5,23 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <meta property="og:title" content="Map Image Generator for SVG 360 View">
-  <meta property="og:description" content="Generate map images and apply SVG filters to display equirectangular images in 360-degree perspective views.">
+  <meta property="og:title" content="Map Image Generator for HTML SVG 360 Viewer">
+  <meta property="og:description"
+    content="Generate map images and apply SVG filters to display equirectangular images in 360-degree perspective views with only HTML.">
   <meta property="og:type" content="website">
   <meta property="og:site_name" content="mu-777.github.io/svg-360-viewer">
   <meta property="og:url" content="https://mu-777.github.io/svg-360-viewer/">
-  <meta property="og:image" content="https://mu-777.github.io/svg-360-viewer/mapimgs/map_scale=254.096_src=1980x990_dst=600x300_hfov=135.png">
+  <meta property="og:image"
+    content="https://mu-777.github.io/svg-360-viewer/mapimgs/map_scale=254.096_src=1980x990_dst=600x300_hfov=135.png">
   <meta name="twitter:card" content="summary" />
   <meta name="twitter:site" content="@mu_777_" />
 
-  <title>Map Image Generator for SVG 360 View</title>
-  <meta name="description" content="Generate map images and apply SVG filters to display equirectangular images in 360-degree perspective views.">
+  <title>Map Image Generator for HTML SVG 360 Viewer</title>
+  <meta name="description"
+    content="Generate map images and apply SVG filters to display equirectangular images in 360-degree perspective views with only HTML.">
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/highlight.min.js"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/styles/default.min.css">
 
   <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
   <!-- <link rel="stylesheet" href="github-markdown.css" /> -->
@@ -181,6 +187,15 @@
       }
     }
 
+    .usage ol {
+      margin-left: 1.5em;
+      line-height: 1.6;
+    }
+
+    .usage li {
+      margin-bottom: 0.5em;
+    }
+
     .centering {
       display: grid;
       align-items: center;
@@ -214,7 +229,7 @@
     }
 
     .copy-button {
-      width: calc(20% - 22px);
+      width: calc(30% - 22px);
       background-color: transparent;
       border: none;
       color: #0358b3;
@@ -242,7 +257,7 @@
 
 <body>
   <header>
-    <h1>Map Image Generator for SVG 360 View</h1>
+    <h1>Map Image Generator for HTML SVG 360 Viewer</h1>
     <a href="https://github.com/mu-777/svg-360-viewer" target="_blank" class="github-button">
       <img src="https://github.githubassets.com/images/modules/logos_page/GitHub-Mark.png" alt="GitHub"
         style="width: 24px; vertical-align: middle;">
@@ -252,12 +267,22 @@
   <main>
     <section aria-labelledby="lead-section" class="centering">
       <p>
-        Generate map images and apply SVG filters to display equirectangular images in 360-degree perspective views.
+        Generate map images and apply SVG filters to display equirectangular images in 360-degree perspective views with
+        HTML.
       </p>
       <p>
         Details in <a
           href="https://mu-777.hatenablog.com/entry/2024/10/13/174630">https://mu-777.hatenablog.com/entry/2024/10/13/174630</a>
       </p>
+    </section>
+    <section class="usage" aria-labelledby="step-section">
+      <h2>How to Use</h2>
+      <ol>
+        <li>Input parameters and Generate map image</li>
+        <li>Set equirectangular image URL and Press "Show SVG 360 View"</li>
+        <li>Now you can see the HTML SVG 360 view</li>
+      </ol>
+    </section>
     </section>
     <section aria-labelledby="input-section">
       <h2>Input</h2>
@@ -290,11 +315,11 @@
         <canvas id="mapImgCanvas" width="600" height="300" aria-label="Generated map image canvas"></canvas>
       </div>
       <div>
-        <label for="srcWidth">Input Image Width[px]:</label>
+        <label for="srcWidth">Minimum Input Image Width[px]:</label>
         <input type="number" id="srcWidth" readonly>
       </div>
       <div>
-        <label for="srcHeight">Input Image Height[px]:</label>
+        <label for="srcHeight">Minimum Input Image Height[px]:</label>
         <input type="number" id="srcHeight" readonly>
       </div>
       <div>
@@ -302,7 +327,7 @@
         <input type="number" id="mapScale" readonly>
       </div>
       <div class="centering">
-        <button id="mapImgDLBtn" disabled>Download Map Image (If you want)</button>
+        <button id="mapImgDLBtn" disabled>Download Map Image (Optional)</button>
       </div>
     </section>
 
@@ -345,12 +370,12 @@
       </div>
       <div aria-labelledby="code-output">
         <pre>
-          <code id="svg360code">
+          <code id="svg360code" class="html">
   SVG 360 View Code will be generated here.
         </code>
       </pre>
         <div class="copy-button-container">
-          <button type="button" id="copyCodeBtn" class="copy-button" disabled>Copy to Clipboard</button>
+          <button type="button" id="copyCodeBtn" class="copy-button" disabled>Copy the Code to Clipboard</button>
         </div>
       </div>
     </section>
@@ -454,7 +479,8 @@
           plugins: prettierPlugins,
           printWidth: 500,
         });
-        const comment = `<!-- DOWNLOAD https://github.com/mu-777/svg-360-viewer/blob/master/draggablePattern.js and ADD "<script src='<your_path>/draggablePattern.js'> </script>" -->;`
+        const comment = `<!-- DOWNLOAD https://github.com/mu-777/svg-360-viewer/blob/master/draggablePattern.js and ADD "<script src='<your_path>/draggablePattern.js'> </script>
+  " -->;`
         codeElement.textContent = `\n${comment}\n${formattedHtml}`;
 
         document.getElementById('copyCodeBtn').disabled = false;
