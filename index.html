@@ -465,23 +465,26 @@
         const targetElement = document.getElementById('svg360ViewImpl');
         const domParser = new DOMParser();
         const dom = domParser.parseFromString(targetElement.innerHTML, "text/html");
-        const svgMapImg_code = dom.getElementById("svg360MapImg");
-        svgMapImg_code.setAttribute("xlink:href", "<Put Downloaded Map Image URL>");
-        const srcImg_code = dom.getElementById("srcImg");
-        srcImg_code.setAttribute("xlink:href", "<Put Target Equirectangular Image URL>");
+        const svgEl = dom.getElementById("svg360View");
+        const scriptEl = document.createElement("script");
+        scriptEl.src = "https://cdn.jsdelivr.net/gh/mu-777/svg-360-viewer@master/draggablePattern.min.js";
+        dom.body.insertBefore(scriptEl, svgEl)
+
+        // const svgMapImg_code = dom.getElementById("svg360MapImg");
+        // svgMapImg_code.setAttribute("xlink:href", "<Put Downloaded Map Image URL>");
+        // const srcImg_code = dom.getElementById("srcImg");
+        // srcImg_code.setAttribute("xlink:href", "<Put Target Equirectangular Image URL>");
         const svg360Script_code = dom.getElementById("svg360Script");
         svg360Script_code.textContent = `draggablePattern('patternRect', 'tilePattern', ${srcWidth / 2}, ${srcHeight / 2}, null, null);        `
 
-        const htmlCodeString = dom.getElementsByTagName('body')[0].innerHTML;
+        const htmlCodeString = dom.body.innerHTML;
         const codeElement = document.getElementById('svg360code');
         var formattedHtml = prettier.format(htmlCodeString, {
           parser: "html",
           plugins: prettierPlugins,
           printWidth: 500,
         });
-        const comment = `<!-- DOWNLOAD https://github.com/mu-777/svg-360-viewer/blob/master/draggablePattern.js and ADD "<script src='<your_path>/draggablePattern.js'> </script>
-  " -->;`
-        codeElement.textContent = `\n${comment}\n${formattedHtml}`;
+        codeElement.textContent = `\n${formattedHtml}`;
 
         document.getElementById('copyCodeBtn').disabled = false;
       });
