@@ -436,6 +436,10 @@
     draggablePattern('patternRect', 'tilePattern', 1210, 605, null, null);
   &lt;/script&gt;
 &lt;/svg&gt;</code></pre>
+      <p>
+        Want to poke at it yourself? <a href="https://codepen.io/mu-777/pen/LExzGWQ" target="_blank"
+          rel="noopener"><b>Try it live on CodePen →</b></a>
+      </p>
       <small>
         Paste it as-is and you get exactly the viewer above. To try your own image, the
         <a href="./index.html">generator</a> spits out the map &mdash; then you drop in any equirectangular (2:1)
@@ -530,8 +534,6 @@
         { src: "./srcimgs/Roter-Schirm_Panorama.jpg", title: "Roter Schirm", sourceUrl: "https://commons.wikimedia.org/wiki/File:Roter-Schirm_Panorama.jpg", license: "CC BY-SA 4.0 (DerMische)" },
       ];
       // ----------------------------------------------------------------------
-
-      const prefersReduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
       // ===== Hero: drag + wheel/pinch zoom =====
       // Zoom swaps the whole geometry (each map has its own src size), keeping the
@@ -768,7 +770,6 @@
       });
 
       addTiles(PANORAMAS.length); // initial grid (20 = 5x4)
-      if (prefersReduced) document.getElementById("spinChk").disabled = true;
     })();
   </script>
 </body>
