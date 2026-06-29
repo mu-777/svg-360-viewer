@@ -265,6 +265,17 @@
     </a>
   </header>
   <main>
+    <section aria-labelledby="why-section" class="centering">
+      <div style="width:100%;background:#eaf3ff;border:1px solid #cfe0ff;border-radius:8px;padding:14px 18px;margin-bottom:10px;text-align:center;">
+        <strong style="color:#0358b3;">Why render 360° panoramas as SVG?</strong>
+        <span style="color:#444;"> A live demo of what this approach makes possible &mdash; no WebGL, no Three.js.</span>
+        <br>
+        <a href="./why360svg.html"
+          style="display:inline-block;margin-top:8px;background:#0358b3;color:#fff;padding:8px 16px;border-radius:6px;font-weight:bold;">
+          See the demo &rarr;
+        </a>
+      </div>
+    </section>
     <section aria-labelledby="lead-section" class="centering">
       <p>
         Generate map images and apply SVG filters to display equirectangular images in 360-degree perspective views with
@@ -342,7 +353,7 @@
               panoramas with equirectangular projection, Wikimedia Commons</a>
           </small>
           <input type="url" id="srcImgUrl" required aria-describedby="srcImg-desc"
-            value="https://upload.wikimedia.org/wikipedia/commons/thumb/6/6f/Kings_Cross_Railway_Station_Concourse_360x180%2C_London%2C_UK_-_Diliff.jpg/2560px-Kings_Cross_Railway_Station_Concourse_360x180%2C_London%2C_UK_-_Diliff.jpg">
+            value="https://upload.wikimedia.org/wikipedia/commons/thumb/6/6f/Kings_Cross_Railway_Station_Concourse_360x180%2C_London%2C_UK_-_Diliff.jpg/3840px-Kings_Cross_Railway_Station_Concourse_360x180%2C_London%2C_UK_-_Diliff.jpg">
         </div>
         <div class="centering">
           <button type="submit" id="showViewBtn" disabled>Show SVG 360 View</button>
@@ -382,7 +393,7 @@
   </main>
 
   <footer>
-    <p>mu-777, https://mu-777.hatenablog.com/</p>
+    <p>© 2026 <a href="https://github.com/mu-777" target="_blank" rel="noopener">mu-777</a></p>
   </footer>
 
   <script>
