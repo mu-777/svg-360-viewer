@@ -150,6 +150,37 @@
       white-space: nowrap;
     }
 
+    /* floating "reset to center" control: a round button, deliberately styled
+       unlike the .drag-hint pill so it reads as clickable, not as a caption */
+    .center-reset-btn {
+      position: absolute;
+      right: 12px;
+      bottom: 12px;
+      width: 42px;
+      height: 42px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: #fff;
+      color: #0358b3;
+      font-size: 22px;
+      line-height: 1;
+      border: 1px solid #cfe0ff;
+      border-radius: 50%;
+      cursor: pointer;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.25);
+      transition: background .12s ease, transform .12s ease;
+    }
+
+    .center-reset-btn:hover {
+      background: #eaf3ff;
+      transform: scale(1.06);
+    }
+
+    .center-reset-btn:active {
+      transform: scale(0.95);
+    }
+
     /* code block */
     pre {
       background-color: #f8f9fa;
@@ -311,6 +342,25 @@
       margin-top: 1px;
     }
 
+    /* hero credit: a single centered line (the tile .cap stays stacked / two-line) */
+    .hero-cap {
+      text-align: center;
+    }
+
+    .hero-cap .cap-title,
+    .hero-cap .cap-lic {
+      display: inline;
+      max-width: none;
+      margin: 0;
+      white-space: normal;
+    }
+
+    .hero-cap .cap-lic::before {
+      content: "·";
+      margin: 0 6px;
+      color: #b6bdca;
+    }
+
     small {
       display: block;
       color: #6c757d;
@@ -406,6 +456,14 @@
               filter="url(#heroFilter)" />
           </svg>
           <div class="drag-hint">↔ drag &nbsp;·&nbsp; 🔍 scroll / pinch to zoom</div>
+          <button type="button" id="heroCenterBtn" class="center-reset-btn" title="Reset view to center"
+            aria-label="Reset view to center">◎</button>
+        </div>
+        <div class="cap hero-cap">
+          <a class="cap-title"
+            href="https://commons.wikimedia.org/wiki/File:Kings_Cross_Railway_Station_Concourse_360x180,_London,_UK_-_Diliff.jpg"
+            target="_blank" rel="noopener">Kings Cross Station Concourse, London</a>
+          <span class="cap-lic">CC BY-SA 3.0 (Diliff)</span>
         </div>
       </div>
     </section>
@@ -661,6 +719,10 @@
         const end = (e) => { dragging = false; try { svg.releasePointerCapture(e.pointerId); } catch (_) { } };
         svg.addEventListener("pointerup", end);
         svg.addEventListener("pointercancel", end);
+
+        // floating button: snap the horizontal view back to center (forward)
+        const centerBtn = document.getElementById("heroCenterBtn");
+        if (centerBtn) centerBtn.addEventListener("click", () => { frac = 0; setRotation(); });
       })();
 
       // ===== Wall: each tile keeps one rotation state shared by drag + auto-rotate =====
@@ -703,7 +765,7 @@
         const pat = el.querySelector("pattern");
         const rect = el.querySelector("rect");
         // start from the pattern's actual initial x (the markup centers it at -1100)
-        const t = { pat, x: parseFloat(pat.getAttribute("x")) || 0, speed: 0.4, dragging: false, startClientX: 0, startX: 0, pxToUser: 1 };
+        const t = { pat, x: parseFloat(pat.getAttribute("x")) || 0, speed: 1.0, dragging: false, startClientX: 0, startX: 0, pxToUser: 1 };
 
         rect.addEventListener("pointerdown", (e) => {
           t.dragging = true;
